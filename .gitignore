@@ -1,1 +1,9 @@
+# Ignorar a pasta de assets inteira
 assets/
+
+# Ignorar arquivos temporários do sistema
+*.log
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
