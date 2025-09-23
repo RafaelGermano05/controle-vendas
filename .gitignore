@@ -1,6 +1,6 @@
 # Ignorar a pasta de assets inteira
 assets/
-
+script.js
 # Ignorar arquivos temporários do sistema
 *.log
 *.tmp
