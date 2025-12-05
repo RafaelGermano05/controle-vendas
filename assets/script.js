@@ -1,9 +1,11 @@
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzSGE81-VtHW9g-jTENS47ObseH8jXz2i4fNiDca3D5EMSWMC4mXwmaEAgszhAN037y/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxNGgUrjWwmT2YAO57GWtAHjjzYZKJaZgbCfF42cwxrWCb3zyQVDORrDuBSWk3r7UNa/exec';
 
 // Elementos principais
 const form = document.getElementById('clienteForm');
 const successMessage = document.getElementById('successMessage');
 const newVendaBtn = document.getElementById('newVendaBtn');
+
+
 
 // Elementos do supervisor
 const supervisorSelect = document.getElementById('supervisor');
@@ -21,7 +23,8 @@ const requiredFields = [
     { id: 'email', errorId: 'email-error' },
     { id: 'dataVenda', errorId: 'dataVenda-error' },
     { id: 'serial', errorId: 'serial-error' },
-    { id: 'concorrencia', errorId: 'concorrencia-error' }
+    { id: 'concorrencia', errorId: 'concorrencia-error' },
+    { id: 'indicacaoTexto', errorId: 'indicacaoTexto-error' }
 ];
 
 // Inicialização quando o DOM estiver carregado
@@ -38,6 +41,36 @@ document.addEventListener('DOMContentLoaded', function() {
     
     document.getElementById('dataAtendimento').value = new Date().toISOString().split('T')[0];
 });
+
+// const indicacaoSwitch = document.getElementById('indicacaoSwitch');
+// const indicacaoTexto  = document.getElementById('indicacaoTexto');
+
+// indicacaoSwitch.addEventListener('change', () => {
+//   if (indicacaoSwitch.checked) {
+//     indicacaoSwitch.value = 'Sim';
+//     indicacaoTexto.textContent = 'Sim';
+//   } else {
+//     indicacaoSwitch.value = 'Nao';
+//     indicacaoTexto.textContent = 'Não';
+//   }
+// });
+
+const indicacaoSwitch = document.getElementById('indicacaoSwitch');
+const indicacaoTextoHidden = document.getElementById('indicacaoTexto');
+const indicacaoTextoLabel = document.getElementById('indicacaoTextoLabel');
+
+indicacaoSwitch.addEventListener('change', () => {
+  if (indicacaoSwitch.checked) {
+    indicacaoSwitch.value = 'Sim';
+    indicacaoTextoHidden.value = 'Sim';
+    indicacaoTextoLabel.textContent = 'Sim';
+  } else {
+    indicacaoSwitch.value = 'Nao';
+    indicacaoTextoHidden.value = 'Nao';
+    indicacaoTextoLabel.textContent = 'Não';
+  }
+});
+
 
 // Configura máscara de telefone
 function setupTelefoneMask() {
@@ -309,7 +342,8 @@ form.addEventListener('submit', async (e) => {
         dataVenda: document.getElementById('dataVenda').value,
         serial: document.getElementById('serial').value.trim(),
         observacoes: document.getElementById('observacoes').value.trim(),
-        concorrencia: document.getElementById('concorrencia').value.trim()
+        concorrencia: document.getElementById('concorrencia').value.trim(),
+        indicacaoTexto: indicacaoSwitch.checked ? 'Sim' : 'Nao'
     };
     
     // Carregando do botão de submit
@@ -567,3 +601,6 @@ function parseLocalDate(dateString) {
     }
     return new Date(dateString);
 }
+
+
+

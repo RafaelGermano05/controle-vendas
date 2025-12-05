@@ -36,7 +36,6 @@
             <div id="venda-tab" class="tab-content active">
                 <form id="clienteForm" class="cliente-form">
                     <h2>Registrar Venda</h2>
-                    
                     <div class="form-group">
                         <label for="supervisor">Supervisor Responsável*</label>
                         <select id="supervisor" name="supervisor" required>
@@ -74,6 +73,50 @@
                         <input type="text" id="cliente" name="cliente" placeholder="Nome do cliente" required>
                         <div class="error-message" id="cliente-error"></div>
                     </div>
+
+                    <!-- <div class="form-group" style="background-color: rgb(255, 255, 0); border-radius: 0 15% 0 0;">
+                        <label for="indicacao" style="margin-left: 6.4px;">Indicação MELI (Marketplace)*</label>
+                        <select id="indicacao" name="indicacao" required>
+                            <option value="" disabled selected>Perfil aderente a Mercado Livre</option>
+                            <option value="Sim" style="background-color: rgb(217, 255, 249);">Sim</option>
+                            <option value="Nao" style="background-color: rgb(217, 255, 249);">Não</option>
+                        </select>
+                    </div> -->
+                    <div class="form-group meli-group">
+                        <div class="meli-header">
+                            <label for="indicacaoSwitch" style="font-family: league system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 20px;">Indicação MELI (Marketplace)*</label>
+
+                            <div class="meli-switch-wrap">
+                            <span id="indicacaoTextoLabel">Não</span> <!-- texto visível -->
+                            <label class="switch">
+                                <input type="checkbox" id="indicacaoSwitch" name="indicacao" value="Nao">
+                                <span class="slider round"></span>
+                            </label>
+                            </div>
+
+                            <input type="hidden" id="indicacaoTexto" value="Nao">
+                            <div class="error-message" id="indicacaoTexto-error"></div>
+
+                        </div>
+                    </div>
+                        
+
+
+
+
+                    <!-- <div class="form-group" style="background-color: rgb(255, 255, 0); border-radius: 0 15% 0 0;">
+                        <label style="margin-left: 6.4px;">Indicação MELI (Marketplace)*</label>
+
+                        <div class="toggle-container">
+                            <input type="radio" id="meli-sim" name="indicacao" value="Sim" required>
+                            <label for="meli-sim" class="toggle-option">Sim</label>
+
+                            <input type="radio" id="meli-nao" name="indicacao" value="Nao">
+                            <label for="meli-nao" class="toggle-option">Não</label>
+
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label for="estabelecimento">Nome do Estabelecimento*</label>
