@@ -82,6 +82,32 @@
                             <option value="Nao" style="background-color: rgb(217, 255, 249);">Não</option>
                         </select>
                     </div> -->
+
+                    <div class="form-group">
+                        <label for="ramo">Ramo de Atuação*</label>
+                        <select id="ramo" name="ramo" required>
+                            <option value="" disabled selected>Selecione uma alternativa:*</option>
+                            <option value="Comércio de Alimentos e Bebidas">Comércio de Alimentos e Bebidas</option>
+                            <option value="Moda, Vestuário e Acessórios">Moda, Vestuário e Acessórios</option>
+                            <option value="Calçados, Joias e Ótica">Calçados, Joias e Ótica</option>
+                            <option value="Artigos para Casa, Móveis e Decoração">Artigos para Casa, Móveis e Decoração</option>
+                            <option value="Cosméticos, Beleza e Bem-Estar">Cosméticos, Beleza e Bem-Estar</option>
+                            <option value="Serviços Automotivos">Serviços Automotivos</option>
+                            <option value="Construção, Materiais e Serviços Técnicos">Construção, Materiais e Serviços Técnicos</option>
+                            <option value="Serviços Profissionais Diversos">Serviços Profissionais Diversos</option>
+                            <option value="Serviços Pessoais">Serviços Pessoais</option>
+                            <option value="Saúde e Cuidados">Saúde e Cuidados</option>
+                            <option value="Educação e Cursos">Educação e Cursos</option>
+                            <option value="Lazer, Entretenimento e Turismo">Lazer, Entretenimento e Turismo</option>
+                            <option value="Tecnologia e Eletrônicos">Tecnologia e Eletrônicos</option>
+                            <option value="Animais / Pet Shop">Animais / Pet Shop</option>
+                            <option value="Varejo Geral e Variedades">Varejo Geral e Variedades</option>
+                            <option value="Outro">Outro (especifique)</option>
+                        </select>
+                        <input type="text" id="outroRamo" name="outroRamo" placeholder="Digite o nome do ramo" class="hidden">
+                        <div class="error-message" id="ramo-error"></div>
+                    </div>
+
                     <div class="form-group meli-group">
                         <div class="meli-header">
                             <label for="indicacaoSwitch" style="font-family: league system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 20px;">Indicação MELI (Marketplace)*</label>
@@ -99,9 +125,6 @@
 
                         </div>
                     </div>
-                        
-
-
 
 
                     <!-- <div class="form-group" style="background-color: rgb(255, 255, 0); border-radius: 0 15% 0 0;">
@@ -122,6 +145,15 @@
                         <label for="estabelecimento">Nome do Estabelecimento*</label>
                         <input type="text" id="estabelecimento" name="estabelecimento" placeholder="Nome do estabelecimento" required>
                         <div class="error-message" id="estabelecimento-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="faturamentoPrometido">Faturamento Prometido (R$)*</label>
+                        <div class="input-with-icon">
+                            <span class="currency-icon">R$</span>
+                            <input type="text" id="faturamentoPrometido" name="faturamentoPrometido" placeholder="0,00" required>
+                        </div>
+                        <div class="error-message" id="faturamentoPrometido-error"></div>
                     </div>
                     
                     <div class="form-group">

@@ -1,4 +1,4 @@
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxNGgUrjWwmT2YAO57GWtAHjjzYZKJaZgbCfF42cwxrWCb3zyQVDORrDuBSWk3r7UNa/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwcIyS9kF1bzF9xXp7_G0Fv4hoFd_A7F6MSk7vKJcsU1Tpbvoeoqly2BMuQhVMUlZ8C/exec';
 
 // Elementos principais
 const form = document.getElementById('clienteForm');
@@ -12,6 +12,10 @@ const supervisorSelect = document.getElementById('supervisor');
 const outroSupervisorInput = document.getElementById('outroSupervisor');
 const supervisorError = document.getElementById('supervisor-error');
 
+const ramoSelect = document.getElementById('ramo');
+const outroRamoInput = document.getElementById('outroRamo');
+const ramoError = document.getElementById('ramo-error');
+
 // Campos obrigatórios
 const requiredFields = [
     { id: 'supervisor', errorId: 'supervisor-error' },
@@ -24,13 +28,15 @@ const requiredFields = [
     { id: 'dataVenda', errorId: 'dataVenda-error' },
     { id: 'serial', errorId: 'serial-error' },
     { id: 'concorrencia', errorId: 'concorrencia-error' },
-    { id: 'indicacaoTexto', errorId: 'indicacaoTexto-error' }
+    { id: 'indicacaoTexto', errorId: 'indicacaoTexto-error' },
+    { id: 'faturamentoPrometido', errorId: 'faturamentoPrometido-error' }
 ];
 
 // Inicialização quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', function() {
     setupTelefoneMask();
     setupSupervisorSelect();
+    setupRamoSelect();
     setupFormValidation();
     setupDateField();
     setupNewVendaButton();
@@ -71,6 +77,25 @@ indicacaoSwitch.addEventListener('change', () => {
   }
 });
 
+
+function setupCurrencyMask() {
+    const faturamentoInput = document.getElementById('faturamentoPrometido');
+    const faturamentoAtualInput = document.getElementById('faturamentoAtual');
+    
+    [faturamentoInput, faturamentoAtualInput].forEach(input => {
+        if (!input) return;
+        
+        input.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = (value / 100).toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            e.target.value = value === '0,00' ? '' : value;
+        });
+    });
+}
 
 // Configura máscara de telefone
 function setupTelefoneMask() {
@@ -147,10 +172,54 @@ function setupSupervisorSelect() {
     });
 }
 
+function setupRamoSelect() {
+    ramoSelect.addEventListener('change', function() {
+        if (this.value === 'Outro') {
+            // Mostra o campo e faz ele ser obrigatório
+            outroRamoInput.classList.remove('hidden');
+            outroRamoInput.required = true;
+            
+            // Foca automaticamente no campo
+            setTimeout(() => {
+                outroRamoInput.focus();
+            }, 100);
+            
+            // Limpa qualquer erro anterior
+            ramoError.textContent = '';
+            ramoError.style.display = 'none';
+        } else {
+            // Esconde o campo e remove a obrigatoriedade
+            outroRamoInput.classList.add('hidden');
+            outroRamoInput.required = false;
+            outroRamoInput.value = '';
+            
+            // Garante que o erro some quando seleciona outra opção
+            ramoSelect.style.borderColor = 'var(--border)';
+            ramoError.style.display = 'none';
+        }
+    });
+
+    // Validação em tempo real do campo "Outro"
+    outroRamoInput.addEventListener('input', function() {
+        if (ramoSelect.value === 'Outro') {
+            if (!this.value.trim()) {
+                this.style.borderColor = 'var(--error)';
+                ramoError.textContent = 'Por favor, digite o nome do ramo';
+                ramoError.style.display = 'block';
+            } else {
+                this.style.borderColor = 'var(--border)';
+                ramoError.style.display = 'none';
+            }
+        }
+    });
+}
+
+
 // Configura validação do formulário
 function setupFormValidation() {
     requiredFields.forEach(field => {
         if (field.id === 'supervisor') return;
+        if (field.id === 'ramo') return;
         
         const input = document.getElementById(field.id);
         const errorElement = document.getElementById(field.errorId);
@@ -242,12 +311,30 @@ function validateForm() {
         supervisorSelect.style.borderColor = 'var(--border)';
         outroSupervisorInput.style.borderColor = 'var(--border)';
         supervisorError.style.display = 'none';
+    };
+
+    if (ramoSelect.value === 'Outro' && !outroRamoInput.value.trim()) {
+        outroRamoInput.style.borderColor = 'var(--error)';
+        ramoError.textContent = 'Por favor, digite o nome do ramo';
+        ramoError.style.display = 'block';
+        isValid = false;
+    } else if (!ramoSelect.value) {
+        ramoSelect.style.borderColor = 'var(--error)';
+        ramoError.textContent = 'Por favor, selecione um ramo';
+        ramoError.style.display = 'block';
+        isValid = false;
+    } else {
+        ramoSelect.style.borderColor = 'var(--border)';
+        outroRamoInput.style.borderColor = 'var(--border)';
+        ramoError.style.display = 'none';
     }
     
     // Validação dos demais campos
     requiredFields.forEach(field => {
         if (field.id === 'supervisor') return;
-        
+
+        if (field.id === 'ramo') return;
+
         const input = document.getElementById(field.id);
         const errorElement = document.getElementById(field.errorId);
         
@@ -295,6 +382,11 @@ function resetForm() {
     outroSupervisorInput.classList.add('hidden');
     outroSupervisorInput.value = '';
     outroSupervisorInput.required = false;
+
+    ramoSelect.selectedIndex = 0;
+    outroRamoInput.classList.add('hidden');
+    outroRamoInput.value = '';
+    outroRamoInput.required = false;
     
     // Define a data atual
     setupDateField();
@@ -308,6 +400,10 @@ async function submitForm(data, tipo = 'venda') {
         
         if (data.supervisor === 'Outro') {
             data.supervisor = outroSupervisorInput.value.trim();
+        }
+
+        if (data.ramo === 'Outro') {
+            data.ramo = outroRamoInput.value.trim();
         }
         
         const response = await fetch(WEB_APP_URL, {
@@ -343,7 +439,11 @@ form.addEventListener('submit', async (e) => {
         serial: document.getElementById('serial').value.trim(),
         observacoes: document.getElementById('observacoes').value.trim(),
         concorrencia: document.getElementById('concorrencia').value.trim(),
-        indicacaoTexto: indicacaoSwitch.checked ? 'Sim' : 'Nao'
+        indicacaoTexto: indicacaoSwitch.checked ? 'Sim' : 'Nao',
+        faturamentoPrometido: document.getElementById('faturamentoPrometido').value.trim(),
+        ramo: ramoSelect.value
+        
+
     };
     
     // Carregando do botão de submit
