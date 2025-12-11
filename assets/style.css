@@ -683,3 +683,192 @@ body {
     border-top-color: white;
     animation: spin 1s ease-in-out infinite;
 }
+
+/* Estilos para a aba de Indicação Meli */
+.section-divider {
+    margin: 30px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.section-divider h3 {
+    color: var(--primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Radio buttons agrupados */
+.radio-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.radio-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.radio-option label {
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* Níveis de interesse */
+.interest-level {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.interest-option {
+    position: relative;
+}
+
+.interest-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.interest-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 10px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: center;
+    background: var(--bg-input);
+}
+
+.interest-label span {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.interest-label small {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.interest-option input:checked + .interest-label {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Cores para os níveis de interesse */
+.interesse-baixo input:checked + .interest-label {
+    border-color: #ef4444;
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #dc2626;
+}
+
+.interesse-medio input:checked + .interest-label {
+    border-color: #f59e0b;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #d97706;
+}
+
+.interesse-bom input:checked + .interest-label {
+    border-color: #10b981;
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    color: #059669;
+}
+
+.interesse-muito-bom input:checked + .interest-label {
+    border-color: #3b82f6;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    color: #2563eb;
+}
+
+/* Checkboxes agrupados */
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 8px;
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.checkbox-option label {
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* Campos opcionais */
+.form-group.optional label {
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.form-group.optional label::after {
+    content: '';
+}
+
+/* Estilo para grupos de campos condicionais */
+.hidden {
+    display: none !important;
+}
+
+/* Animações para a nova aba */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+#indicacao-tab.active {
+    animation: slideInRight 0.3s ease-out;
+}
+
+/* Responsividade para os grupos de botões */
+@media (max-width: 768px) {
+    .interest-level {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .radio-group,
+    .checkbox-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .interest-label {
+        padding: 12px 5px;
+    }
+    
+    .interest-label span {
+        font-size: 1.2rem;
+    }
+}

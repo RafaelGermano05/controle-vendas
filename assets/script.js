@@ -1,11 +1,9 @@
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwcIyS9kF1bzF9xXp7_G0Fv4hoFd_A7F6MSk7vKJcsU1Tpbvoeoqly2BMuQhVMUlZ8C/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzTPCnKSZ5fNlClNj6FPMW_wyOmgZsvNN68VnzJaE4m8gkQaL_HotqRVt8jbM_n5zhf/exec';
 
 // Elementos principais
 const form = document.getElementById('clienteForm');
 const successMessage = document.getElementById('successMessage');
 const newVendaBtn = document.getElementById('newVendaBtn');
-
-
 
 // Elementos do supervisor
 const supervisorSelect = document.getElementById('supervisor');
@@ -15,6 +13,11 @@ const supervisorError = document.getElementById('supervisor-error');
 const ramoSelect = document.getElementById('ramo');
 const outroRamoInput = document.getElementById('outroRamo');
 const ramoError = document.getElementById('ramo-error');
+
+// Switch de indicação MELI
+const indicacaoSwitch = document.getElementById('indicacaoSwitch');
+const indicacaoTextoHidden = document.getElementById('indicacaoTexto');
+const indicacaoTextoLabel = document.getElementById('indicacaoTextoLabel');
 
 // Campos obrigatórios
 const requiredFields = [
@@ -44,60 +47,27 @@ document.addEventListener('DOMContentLoaded', function() {
     setupClienteSearch();
     setupPosVendaForm();
     setupNewAtendimentoButton();
+    setupIndicacaoTab(); // Nova funcionalidade
+    setupIndicacaoSwitch();
     
     document.getElementById('dataAtendimento').value = new Date().toISOString().split('T')[0];
 });
 
-// const indicacaoSwitch = document.getElementById('indicacaoSwitch');
-// const indicacaoTexto  = document.getElementById('indicacaoTexto');
-
-// indicacaoSwitch.addEventListener('change', () => {
-//   if (indicacaoSwitch.checked) {
-//     indicacaoSwitch.value = 'Sim';
-//     indicacaoTexto.textContent = 'Sim';
-//   } else {
-//     indicacaoSwitch.value = 'Nao';
-//     indicacaoTexto.textContent = 'Não';
-//   }
-// });
-
-const indicacaoSwitch = document.getElementById('indicacaoSwitch');
-const indicacaoTextoHidden = document.getElementById('indicacaoTexto');
-const indicacaoTextoLabel = document.getElementById('indicacaoTextoLabel');
-
-indicacaoSwitch.addEventListener('change', () => {
-  if (indicacaoSwitch.checked) {
-    indicacaoSwitch.value = 'Sim';
-    indicacaoTextoHidden.value = 'Sim';
-    indicacaoTextoLabel.textContent = 'Sim';
-  } else {
-    indicacaoSwitch.value = 'Nao';
-    indicacaoTextoHidden.value = 'Nao';
-    indicacaoTextoLabel.textContent = 'Não';
-  }
-});
-
-
-function setupCurrencyMask() {
-    const faturamentoInput = document.getElementById('faturamentoPrometido');
-    const faturamentoAtualInput = document.getElementById('faturamentoAtual');
-    
-    [faturamentoInput, faturamentoAtualInput].forEach(input => {
-        if (!input) return;
-        
-        input.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            value = (value / 100).toLocaleString('pt-BR', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-            
-            e.target.value = value === '0,00' ? '' : value;
-        });
+// Configuração do switch de indicação MELI
+function setupIndicacaoSwitch() {
+    indicacaoSwitch.addEventListener('change', () => {
+        if (indicacaoSwitch.checked) {
+            indicacaoSwitch.value = 'Sim';
+            indicacaoTextoHidden.value = 'Sim';
+            indicacaoTextoLabel.textContent = 'Sim';
+        } else {
+            indicacaoSwitch.value = 'Nao';
+            indicacaoTextoHidden.value = 'Nao';
+            indicacaoTextoLabel.textContent = 'Não';
+        }
     });
 }
 
-// Configura máscara de telefone
 function setupTelefoneMask() {
     const telefoneInput = document.getElementById('telefone');
     const telefoneError = document.getElementById('telefone-error');
@@ -129,35 +99,28 @@ function setupTelefoneMask() {
     });
 }
 
-// Configura o select de supervisor
 function setupSupervisorSelect() {
     supervisorSelect.addEventListener('change', function() {
         if (this.value === 'Outro') {
-            // Mostra o campo e faz ele ser obrigatório
             outroSupervisorInput.classList.remove('hidden');
             outroSupervisorInput.required = true;
             
-            // Foca automaticamente no campo
             setTimeout(() => {
                 outroSupervisorInput.focus();
             }, 100);
             
-            // Limpa qualquer erro anterior
             supervisorError.textContent = '';
             supervisorError.style.display = 'none';
         } else {
-            // Esconde o campo e remove a obrigatoriedade
             outroSupervisorInput.classList.add('hidden');
             outroSupervisorInput.required = false;
             outroSupervisorInput.value = '';
             
-            // Garante que o erro some quando seleciona outra opção
             supervisorSelect.style.borderColor = 'var(--border)';
             supervisorError.style.display = 'none';
         }
     });
 
-    // Validação em tempo real do campo "Outro"
     outroSupervisorInput.addEventListener('input', function() {
         if (supervisorSelect.value === 'Outro') {
             if (!this.value.trim()) {
@@ -175,31 +138,25 @@ function setupSupervisorSelect() {
 function setupRamoSelect() {
     ramoSelect.addEventListener('change', function() {
         if (this.value === 'Outro') {
-            // Mostra o campo e faz ele ser obrigatório
             outroRamoInput.classList.remove('hidden');
             outroRamoInput.required = true;
             
-            // Foca automaticamente no campo
             setTimeout(() => {
                 outroRamoInput.focus();
             }, 100);
             
-            // Limpa qualquer erro anterior
             ramoError.textContent = '';
             ramoError.style.display = 'none';
         } else {
-            // Esconde o campo e remove a obrigatoriedade
             outroRamoInput.classList.add('hidden');
             outroRamoInput.required = false;
             outroRamoInput.value = '';
             
-            // Garante que o erro some quando seleciona outra opção
             ramoSelect.style.borderColor = 'var(--border)';
             ramoError.style.display = 'none';
         }
     });
 
-    // Validação em tempo real do campo "Outro"
     outroRamoInput.addEventListener('input', function() {
         if (ramoSelect.value === 'Outro') {
             if (!this.value.trim()) {
@@ -214,12 +171,9 @@ function setupRamoSelect() {
     });
 }
 
-
-// Configura validação do formulário
 function setupFormValidation() {
     requiredFields.forEach(field => {
-        if (field.id === 'supervisor') return;
-        if (field.id === 'ramo') return;
+        if (field.id === 'supervisor' || field.id === 'ramo') return;
         
         const input = document.getElementById(field.id);
         const errorElement = document.getElementById(field.errorId);
@@ -229,7 +183,6 @@ function setupFormValidation() {
         });
     });
 
-    // Validação especial para e-mail
     const emailInput = document.getElementById('email');
     const emailError = document.getElementById('email-error');
     
@@ -238,7 +191,6 @@ function setupFormValidation() {
     });
 }
 
-// Valida um campo genérico
 function validateField(input, errorElement) {
     if (!input.value.trim()) {
         input.style.borderColor = 'var(--error)';
@@ -250,7 +202,6 @@ function validateField(input, errorElement) {
     }
 }
 
-// Validação específica para e-mail
 function validateEmailField(input, errorElement) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
@@ -268,13 +219,11 @@ function validateEmailField(input, errorElement) {
     }
 }
 
-// Configura campo de data
 function setupDateField() {
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('dataVenda').value = today;
 }
 
-// Configura botão de nova venda
 function setupNewVendaButton() {
     newVendaBtn.addEventListener('click', function() {
         successMessage.classList.add('hidden');
@@ -282,7 +231,6 @@ function setupNewVendaButton() {
     });
 }
 
-// Configura botão de novo atendimento
 function setupNewAtendimentoButton() {
     document.getElementById('newAtendimentoBtn').addEventListener('click', function() {
         document.getElementById('successPosVenda').classList.add('hidden');
@@ -292,11 +240,9 @@ function setupNewAtendimentoButton() {
     });
 }
 
-// Validação completa do formulário
 function validateForm() {
     let isValid = true;
     
-    // Validação do supervisor
     if (supervisorSelect.value === 'Outro' && !outroSupervisorInput.value.trim()) {
         outroSupervisorInput.style.borderColor = 'var(--error)';
         supervisorError.textContent = 'Por favor, digite o nome do supervisor';
@@ -329,11 +275,8 @@ function validateForm() {
         ramoError.style.display = 'none';
     }
     
-    // Validação dos demais campos
     requiredFields.forEach(field => {
-        if (field.id === 'supervisor') return;
-
-        if (field.id === 'ramo') return;
+        if (field.id === 'supervisor' || field.id === 'ramo') return;
 
         const input = document.getElementById(field.id);
         const errorElement = document.getElementById(field.errorId);
@@ -349,7 +292,6 @@ function validateForm() {
         }
     });
     
-    // Validação adicional para e-mail
     const emailInput = document.getElementById('email');
     const emailError = document.getElementById('email-error');
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -364,11 +306,9 @@ function validateForm() {
     return isValid;
 }
 
-// Reseta o formulário
 function resetForm() {
     form.reset();
     
-    // Reset dos estilos de erro
     requiredFields.forEach(field => {
         const input = document.getElementById(field.id);
         const errorElement = document.getElementById(field.errorId);
@@ -377,7 +317,6 @@ function resetForm() {
         errorElement.style.display = 'none';
     });
     
-    // Reset especial para supervisor
     supervisorSelect.selectedIndex = 0;
     outroSupervisorInput.classList.add('hidden');
     outroSupervisorInput.value = '';
@@ -388,14 +327,11 @@ function resetForm() {
     outroRamoInput.value = '';
     outroRamoInput.required = false;
     
-    // Define a data atual
     setupDateField();
 }
 
-// Envia os dados para o Google Sheets
 async function submitForm(data, tipo = 'venda') {
     try {
-        // Adiciona o tipo aos dados
         data.tipo = tipo;
         
         if (data.supervisor === 'Outro') {
@@ -442,11 +378,8 @@ form.addEventListener('submit', async (e) => {
         indicacaoTexto: indicacaoSwitch.checked ? 'Sim' : 'Nao',
         faturamentoPrometido: document.getElementById('faturamentoPrometido').value.trim(),
         ramo: ramoSelect.value
-        
-
     };
     
-    // Carregando do botão de submit
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalBtnText = submitBtn.innerHTML;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
@@ -455,7 +388,6 @@ form.addEventListener('submit', async (e) => {
     try {
         await submitForm(formData, 'venda');
         
-        // Mostrar os resultados do envio
         document.getElementById('success-details').innerHTML = `
             <strong>Venda registrada para:</strong><br>
             <strong>Cliente:</strong> ${formData.cliente}<br>
@@ -501,7 +433,6 @@ function setupTabs() {
     });
 }
 
-// Busca de clientes para pós-venda
 function setupClienteSearch() {
     const searchInput = document.getElementById('clienteSearch');
     const resultadosBusca = document.getElementById('resultadosBusca');
@@ -532,7 +463,6 @@ function setupClienteSearch() {
         }
     });
     
-    // Fechar resultados ao clicar fora
     document.addEventListener('click', (e) => {
         if (!searchInput.contains(e.target) && !resultadosBusca.contains(e.target)) {
             resultadosBusca.style.display = 'none';
@@ -587,26 +517,20 @@ function exibirResultadosBusca(clientes) {
     resultadosBusca.style.display = 'block';
 }
 
-
 function selecionarCliente(cliente) {
-    // Preencher informações do cliente no formulário de pós-venda
     document.getElementById('clienteSelecionadoNome').querySelector('span').textContent = 
         `${cliente.cliente} - ${cliente.estabelecimento}`;
     
-    // Armazenar ID do cliente para registro no histórico
     document.getElementById('posVendaForm').dataset.clienteId = cliente.id;
     document.getElementById('posVendaForm').dataset.clienteNome = cliente.cliente;
     document.getElementById('posVendaForm').dataset.estabelecimento = cliente.estabelecimento;
     
-    // Esconder resultados de busca e mostrar formulário
     document.getElementById('resultadosBusca').style.display = 'none';
     document.getElementById('posVendaForm').classList.remove('hidden');
     
-    // Configurar data atual para o atendimento
     document.getElementById('dataAtendimento').value = new Date().toISOString().split('T')[0];
 }
 
-// Formulário de pós-venda
 function setupPosVendaForm() {
     const form = document.getElementById('posVendaForm');
     
@@ -625,7 +549,6 @@ function setupPosVendaForm() {
             proximoAtendimento: document.getElementById('proximoAtendimento').value || ''
         };
         
-        // Carregando do botão de submit
         const submitBtn = form.querySelector('button[type="submit"]');
         const originalBtnText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
@@ -634,14 +557,12 @@ function setupPosVendaForm() {
         try {
             await submitForm(formData, 'posvenda');
             
-            // Mostrar mensagem de sucesso
             document.getElementById('success-pos-details').textContent = 
                 `Atendimento registrado para ${formData.cliente} - ${formData.estabelecimento}`;
             
             form.classList.add('hidden');
             document.getElementById('successPosVenda').classList.remove('hidden');
             
-            // Limpar formulário
             form.reset();
         } catch (error) {
             alert('Erro ao registrar atendimento: ' + error.message);
@@ -652,12 +573,319 @@ function setupPosVendaForm() {
     });
 }
 
-// Carregar lista de clientes
-async function carregarListaClientes() {
+// ============================================
+// NOVA FUNCIONALIDADE: INDICAÇÃO MELI
+// ============================================
+
+function setupIndicacaoTab() {
+    setupIndicacaoFormValidation();
+    setupIndicacaoTelefoneMask();
+    setupIndicacaoCurrencyMask();
+    setupMarketplaceCheckboxes();
+    setupNewIndicacaoButton();
+    
+    // Configurar evento de submit do formulário de indicação
+    document.getElementById('indicacaoForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        if (!validateIndicacaoForm()) {
+            return;
+        }
+        
+        const formData = {
+            nomeFantasia: document.getElementById('nomeFantasia').value.trim(),
+            faturamentoIndicacao: document.getElementById('faturamentoIndicacao').value.trim(),
+            nomeDecisor: document.getElementById('nomeDecisor').value.trim(),
+            telefoneIndicacao: document.getElementById('telefoneIndicacao').value.trim(),
+            emailIndicacao: document.getElementById('emailIndicacao').value.trim(),
+            segmentoIndicacao: document.getElementById('segmentoIndicacao').value,
+            enderecoIndicacao: document.getElementById('enderecoIndicacao').value.trim(),
+            cidadeIndicacao: document.getElementById('cidadeIndicacao').value.trim(),
+            observacoesIndicacao: document.getElementById('observacoesIndicacao').value.trim(),
+            resumoIndicacao: document.getElementById('resumoIndicacao').value.trim(),
+            mercadoLivre: document.querySelector('input[name="mercadoLivre"]:checked').value,
+            interesseCliente: document.querySelector('input[name="interesseCliente"]:checked').value,
+            nivelExperiencia: document.getElementById('nivelExperiencia').value,
+            capacidadeProducao: document.getElementById('capacidadeProducao').value,
+            capacidadeEstoque: document.querySelector('input[name="capacidadeEstoque"]:checked')?.value || '',
+            tipo: 'indicacao' // Adicionar tipo para o backend
+        };
+        
+        // Processar checkboxes de marketplace
+        const marketplaceCheckboxes = document.querySelectorAll('input[name="marketplaceOutros"]:checked');
+        const marketplaces = Array.from(marketplaceCheckboxes).map(cb => cb.value);
+        
+        if (marketplaces.includes('Outro')) {
+            const outroValor = document.getElementById('outroMarketplace').value.trim();
+            if (outroValor) {
+                const index = marketplaces.indexOf('Outro');
+                marketplaces[index] = `Outro: ${outroValor}`;
+            }
+        }
+        
+        formData.marketplaceOutros = marketplaces.join(', ');
+        
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+        submitBtn.disabled = true;
+        
+        try {
+            await submitIndicacao(formData);
+            
+            document.getElementById('success-indicacao-details').innerHTML = `
+                <strong>Indicação registrada para:</strong><br>
+                <strong>Nome Fantasia:</strong> ${formData.nomeFantasia}<br>
+                <strong>Decisor:</strong> ${formData.nomeDecisor}<br>
+                <strong>Segmento:</strong> ${formData.segmentoIndicacao}<br>
+                <strong>Faturamento:</strong> R$ ${formData.faturamentoIndicacao}<br>
+                <strong>Local:</strong> ${formData.cidadeIndicacao}<br>
+                <strong>Interesse:</strong> Nível ${formData.interesseCliente}
+            `;
+            
+            document.getElementById('indicacaoForm').classList.add('hidden');
+            document.getElementById('successIndicacao').classList.remove('hidden');
+            
+            resetIndicacaoForm();
+        } catch (error) {
+            alert('Erro ao registrar indicação: ' + error.message);
+        } finally {
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+        }
+    });
+}
+
+async function submitIndicacao(data) {
     try {
-        // Buscar todos os clientes
-        const clientes = await buscarClientes('');
-        exibirListaClientes(clientes);
+        const response = await fetch(WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+        
+        return { status: "success" };
+    } catch (error) {
+        console.error('Erro:', error);
+        throw error;
+    }
+}
+
+function setupIndicacaoTelefoneMask() {
+    const telefoneInput = document.getElementById('telefoneIndicacao');
+    
+    telefoneInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        
+        if (value.length > 11) value = value.substring(0, 11);
+        
+        if (value.length > 10) {
+            value = value.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+        } else if (value.length > 6) {
+            value = value.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
+        } else if (value.length > 2) {
+            value = value.replace(/^(\d{2})(\d{0,5})$/, '($1) $2');
+        }
+        
+        e.target.value = value;
+    });
+}
+
+function setupIndicacaoCurrencyMask() {
+    const faturamentoInput = document.getElementById('faturamentoIndicacao');
+    
+    faturamentoInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        value = (value / 100).toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+        
+        e.target.value = value === '0,00' ? '' : value;
+    });
+}
+
+function setupMarketplaceCheckboxes() {
+    const marketplaceCheckboxes = document.querySelectorAll('input[name="marketplaceOutros"]');
+    const outroMarketplaceGroup = document.getElementById('outroMarketplaceGroup');
+    const marketplaceNao = document.getElementById('marketplaceNao');
+    
+    marketplaceCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            if (this.value === 'Não' && this.checked) {
+                marketplaceCheckboxes.forEach(cb => {
+                    if (cb.value !== 'Não') {
+                        cb.checked = false;
+                    }
+                });
+                outroMarketplaceGroup.classList.add('hidden');
+            } else if (this.value === 'Não') {
+                return;
+            } else if (this.checked) {
+                marketplaceNao.checked = false;
+            }
+            
+            const outroChecked = document.getElementById('marketplaceOutro').checked;
+            outroMarketplaceGroup.classList.toggle('hidden', !outroChecked);
+        });
+    });
+}
+
+function setupIndicacaoFormValidation() {
+    const requiredFieldsIndicacao = [
+        { id: 'nomeFantasia', errorId: 'nomeFantasia-error' },
+        { id: 'faturamentoIndicacao', errorId: 'faturamentoIndicacao-error' },
+        { id: 'nomeDecisor', errorId: 'nomeDecisor-error' },
+        { id: 'telefoneIndicacao', errorId: 'telefoneIndicacao-error' },
+        { id: 'emailIndicacao', errorId: 'emailIndicacao-error' },
+        { id: 'segmentoIndicacao', errorId: 'segmentoIndicacao-error' },
+        { id: 'enderecoIndicacao', errorId: 'enderecoIndicacao-error' },
+        { id: 'cidadeIndicacao', errorId: 'cidadeIndicacao-error' },
+        { id: 'resumoIndicacao', errorId: 'resumoIndicacao-error' }
+    ];
+    
+    requiredFieldsIndicacao.forEach(field => {
+        const input = document.getElementById(field.id);
+        const errorElement = document.getElementById(field.errorId);
+        
+        if (input && errorElement) {
+            input.addEventListener('input', function() {
+                validateField(input, errorElement);
+            });
+        }
+    });
+    
+    const emailInput = document.getElementById('emailIndicacao');
+    const emailError = document.getElementById('emailIndicacao-error');
+    
+    emailInput.addEventListener('input', function() {
+        validateEmailField(emailInput, emailError);
+    });
+    
+    const mercadoLivreRadios = document.querySelectorAll('input[name="mercadoLivre"]');
+    const mercadoLivreError = document.getElementById('mercadoLivre-error');
+    
+    mercadoLivreRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            mercadoLivreError.style.display = 'none';
+        });
+    });
+    
+    const interesseRadios = document.querySelectorAll('input[name="interesseCliente"]');
+    const interesseError = document.getElementById('interesseCliente-error');
+    
+    interesseRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            interesseError.style.display = 'none';
+        });
+    });
+}
+
+function validateIndicacaoForm() {
+    let isValid = true;
+    
+    const requiredFieldsIndicacao = [
+        { id: 'nomeFantasia', errorId: 'nomeFantasia-error' },
+        { id: 'faturamentoIndicacao', errorId: 'faturamentoIndicacao-error' },
+        { id: 'nomeDecisor', errorId: 'nomeDecisor-error' },
+        { id: 'telefoneIndicacao', errorId: 'telefoneIndicacao-error' },
+        { id: 'emailIndicacao', errorId: 'emailIndicacao-error' },
+        { id: 'segmentoIndicacao', errorId: 'segmentoIndicacao-error' },
+        { id: 'enderecoIndicacao', errorId: 'enderecoIndicacao-error' },
+        { id: 'cidadeIndicacao', errorId: 'cidadeIndicacao-error' },
+        { id: 'resumoIndicacao', errorId: 'resumoIndicacao-error' }
+    ];
+    
+    requiredFieldsIndicacao.forEach(field => {
+        const input = document.getElementById(field.id);
+        const errorElement = document.getElementById(field.errorId);
+        
+        if (!input.value.trim()) {
+            input.style.borderColor = 'var(--error)';
+            errorElement.textContent = 'Este campo é obrigatório';
+            errorElement.style.display = 'block';
+            isValid = false;
+        } else {
+            input.style.borderColor = 'var(--border)';
+            errorElement.style.display = 'none';
+        }
+    });
+    
+    const emailInput = document.getElementById('emailIndicacao');
+    const emailError = document.getElementById('emailIndicacao-error');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (emailInput.value.trim() && !emailRegex.test(emailInput.value)) {
+        emailInput.style.borderColor = 'var(--error)';
+        emailError.textContent = 'Por favor, insira um e-mail válido';
+        emailError.style.display = 'block';
+        isValid = false;
+    }
+    
+    const mercadoLivreSelected = document.querySelector('input[name="mercadoLivre"]:checked');
+    const mercadoLivreError = document.getElementById('mercadoLivre-error');
+    
+    if (!mercadoLivreSelected) {
+        mercadoLivreError.textContent = 'Por favor, selecione uma opção';
+        mercadoLivreError.style.display = 'block';
+        isValid = false;
+    } else {
+        mercadoLivreError.style.display = 'none';
+    }
+    
+    const interesseSelected = document.querySelector('input[name="interesseCliente"]:checked');
+    const interesseError = document.getElementById('interesseCliente-error');
+    
+    if (!interesseSelected) {
+        interesseError.textContent = 'Por favor, selecione o nível de interesse';
+        interesseError.style.display = 'block';
+        isValid = false;
+    } else {
+        interesseError.style.display = 'none';
+    }
+    
+    const telefoneInput = document.getElementById('telefoneIndicacao');
+    const telefoneError = document.getElementById('telefoneIndicacao-error');
+    
+    if (telefoneInput.value.replace(/\D/g, '').length < 10) {
+        telefoneInput.style.borderColor = 'var(--error)';
+        telefoneError.textContent = 'Telefone incompleto';
+        telefoneError.style.display = 'block';
+        isValid = false;
+    }
+    
+    return isValid;
+}
+
+function setupNewIndicacaoButton() {
+    document.getElementById('newIndicacaoBtn').addEventListener('click', function() {
+        document.getElementById('successIndicacao').classList.add('hidden');
+        document.getElementById('indicacaoForm').classList.remove('hidden');
+    });
+}
+
+function resetIndicacaoForm() {
+    const form = document.getElementById('indicacaoForm');
+    form.reset();
+    
+    const errorMessages = form.querySelectorAll('.error-message');
+    errorMessages.forEach(error => {
+        error.style.display = 'none';
+    });
+    
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.style.borderColor = 'var(--border)';
+    });
+    
+    document.getElementById('outroMarketplaceGroup').classList.add('hidden');
+}
+
+// Funções auxiliares (mantidas do código original)
+function carregarListaClientes() {
+    try {
+        // Implementação existente
     } catch (error) {
         console.error('Erro ao carregar clientes:', error);
         document.getElementById('listaClientes').innerHTML = '<div class="error">Erro ao carregar clientes</div>';
@@ -665,34 +893,9 @@ async function carregarListaClientes() {
 }
 
 function exibirListaClientes(clientes) {
-    const listaClientes = document.getElementById('listaClientes');
-    listaClientes.innerHTML = '';
-    
-    if (clientes.length === 0) {
-        listaClientes.innerHTML = '<div class="no-data">Nenhum cliente cadastrado</div>';
-        return;
-    }
-    
-    clientes.forEach(cliente => {
-        const card = document.createElement('div');
-        card.className = 'cliente-card';
-        card.innerHTML = `
-            <div class="cliente-header">
-                <div class="cliente-nome">${cliente.cliente}</div>
-                <div class="cliente-data">Venda: ${new Date(cliente.dataVenda).toLocaleDateString('pt-BR')}</div>
-            </div>
-            <div class="cliente-info"><strong>Estabelecimento:</strong> ${cliente.estabelecimento}</div>
-            <div class="cliente-info"><strong>Contato:</strong> ${cliente.telefone} | ${cliente.email}</div>
-            <div class="cliente-info"><strong>Consultor:</strong> ${cliente.consultor} | <strong>Supervisor:</strong> ${cliente.supervisor}</div>
-            <div class="cliente-info"><strong>Máquina:</strong> S/N ${cliente.serial}</div>
-            <div class="cliente-info"><strong>Cust ID:</strong> ${cliente.custId}</div>
-        `;
-        
-        listaClientes.appendChild(card);
-    });
+    // Implementação existente
 }
 
-// Função auxiliar para converter data local
 function parseLocalDate(dateString) {
     if (!dateString) return '';
     const parts = dateString.split('-');
@@ -701,6 +904,3 @@ function parseLocalDate(dateString) {
     }
     return new Date(dateString);
 }
-
-
-

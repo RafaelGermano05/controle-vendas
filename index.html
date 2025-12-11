@@ -14,11 +14,12 @@
             <div class="logo">
                 <i class="fas fa-users"></i>
             </div>
-            <h1>Controle de Clientes</h1>
-            <p>Sistema de Venda e Pós-Venda de Máquinas</p>
+            <h1>CIV</h1>
+            <p style="font-size: 20px;">Controle Interno de Vendas</p>
+            <p style="font-size: 13px; font-style: italic; color: rgb(215, 220, 224);">Sistema de Venda, Pós-Venda e Indicação Meli</p>
         </header>
         
-        <!-- Menu de Navegação -->
+        <!-- Menu de Navegação ATUALIZADO -->
         <nav class="tabs">
             <button class="tab-button active" data-tab="venda">
                 <i class="fas fa-cash-register"></i> Nova Venda
@@ -26,9 +27,9 @@
             <button class="tab-button" data-tab="posvenda">
                 <i class="fas fa-headset"></i> Pós-Venda
             </button>
-            <!-- <button class="tab-button" data-tab="clientes">
-                <i class="fas fa-list"></i> Lista de Clientes
-            </button> -->
+            <button class="tab-button" data-tab="indicacao">
+                <i class="fas fa-store"></i> Indicação Meli
+            </button>
         </nav>
         
         <main class="main-content">
@@ -279,6 +280,8 @@
                     <button id="newAtendimentoBtn" class="new-venda-btn">Novo Atendimento</button>
                 </div>
             </div>
+
+            
             
             <!-- Aba de Lista de Clientes -->
             <div id="clientes-tab" class="tab-content">
@@ -294,6 +297,219 @@
                     <!-- Lista será preenchida via JavaScript -->
                 </div>
             </div>
+
+             <div id="indicacao-tab" class="tab-content">
+                <form id="indicacaoForm" class="cliente-form">
+                    <h2>Registrar Indicação Meli</h2>
+                    
+                    <div class="form-group">
+                        <label for="nomeFantasia">Nome Fantasia*</label>
+                        <input type="text" id="nomeFantasia" name="nomeFantasia" placeholder="Nome fantasia do estabelecimento" required>
+                        <div class="error-message" id="nomeFantasia-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="faturamentoIndicacao">Faturamento Mensal (R$)*</label>
+                        <div class="input-with-icon">
+                            <span class="currency-icon">R$</span>
+                            <input type="text" id="faturamentoIndicacao" name="faturamentoIndicacao" placeholder="0,00" required>
+                        </div>
+                        <div class="error-message" id="faturamentoIndicacao-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nomeDecisor">Nome do Decisor*</label>
+                        <input type="text" id="nomeDecisor" name="nomeDecisor" placeholder="Nome da pessoa que decide" required>
+                        <div class="error-message" id="nomeDecisor-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telefoneIndicacao">Telefone do Decisor*</label>
+                        <input type="tel" id="telefoneIndicacao" name="telefoneIndicacao" placeholder="(00) 00000-0000" required>
+                        <div class="error-message" id="telefoneIndicacao-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="emailIndicacao">E-mail do Decisor*</label>
+                        <input type="email" id="emailIndicacao" name="emailIndicacao" placeholder="E-mail válido do decisor" required>
+                        <div class="error-message" id="emailIndicacao-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="segmentoIndicacao">Segmento de Atuação*</label>
+                        <select id="segmentoIndicacao" name="segmentoIndicacao" required>
+                            <option value="" disabled selected>Selecione o segmento</option>
+                            <option value="Alimentos e Bebidas">Alimentos e Bebidas</option>
+                            <option value="Moda e Vestuário">Moda e Vestuário</option>
+                            <option value="Eletrônicos">Eletrônicos</option>
+                            <option value="Casa e Móveis">Casa e Móveis</option>
+                            <option value="Beleza e Cosméticos">Beleza e Cosméticos</option>
+                            <option value="Esportes">Esportes</option>
+                            <option value="Automotivo">Automotivo</option>
+                            <option value="Brinquedos">Brinquedos</option>
+                            <option value="Pet Shop">Pet Shop</option>
+                            <option value="Ferramentas">Ferramentas</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                        <div class="error-message" id="segmentoIndicacao-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="enderecoIndicacao">Endereço*</label>
+                        <input type="text" id="enderecoIndicacao" name="enderecoIndicacao" placeholder="Endereço completo" required>
+                        <div class="error-message" id="enderecoIndicacao-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cidadeIndicacao">Cidade*</label>
+                        <input type="text" id="cidadeIndicacao" name="cidadeIndicacao" placeholder="Cidade" required>
+                        <div class="error-message" id="cidadeIndicacao-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="observacoesIndicacao">Observações</label>
+                        <textarea id="observacoesIndicacao" name="observacoesIndicacao" placeholder="Observações sobre a indicação"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="resumoIndicacao">Resumo da Indicação*</label>
+                        <textarea id="resumoIndicacao" name="resumoIndicacao" placeholder="Resumo da conversa/proposta" required></textarea>
+                        <div class="error-message" id="resumoIndicacao-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Falou sobre Mercado Livre?*</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="mercadoLivreSim" name="mercadoLivre" value="Sim" required>
+                                <label for="mercadoLivreSim">Sim</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="mercadoLivreNao" name="mercadoLivre" value="Não">
+                                <label for="mercadoLivreNao">Não</label>
+                            </div>
+                        </div>
+                        <div class="error-message" id="mercadoLivre-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Interesse do Cliente*</label>
+                        <div class="interest-level">
+                            <div class="interest-option">
+                                <input type="radio" id="interesse1" name="interesseCliente" value="1" required>
+                                <label for="interesse1" class="interest-label interesse-baixo">
+                                    <span>1</span>
+                                    <small>Baixo</small>
+                                </label>
+                            </div>
+                            <div class="interest-option">
+                                <input type="radio" id="interesse2" name="interesseCliente" value="2">
+                                <label for="interesse2" class="interest-label interesse-medio">
+                                    <span>2</span>
+                                    <small>Médio</small>
+                                </label>
+                            </div>
+                            <div class="interest-option">
+                                <input type="radio" id="interesse3" name="interesseCliente" value="3">
+                                <label for="interesse3" class="interest-label interesse-bom">
+                                    <span>3</span>
+                                    <small>Bom</small>
+                                </label>
+                            </div>
+                            <div class="interest-option">
+                                <input type="radio" id="interesse4" name="interesseCliente" value="4">
+                                <label for="interesse4" class="interest-label interesse-muito-bom">
+                                    <span>4</span>
+                                    <small>Muito Bom</small>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="error-message" id="interesseCliente-error"></div>
+                    </div>
+                    
+                    <div class="section-divider">
+                        <h3>Campos Opcionais</h3>
+                    </div>
+                    
+                    <div class="form-group optional">
+                        <label for="nivelExperiencia">Nível de Experiência</label>
+                        <select id="nivelExperiencia" name="nivelExperiencia">
+                            <option value="" selected>Selecione uma opção</option>
+                            <option value="Já Vende">Já Vende</option>
+                            <option value="Vendeu">Vendeu</option>
+                            <option value="Não Vende Mais">Não Vende Mais</option>
+                            <option value="Nunca Vendeu">Nunca Vendeu</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group optional">
+                        <label for="capacidadeProducao">Capacidade de Produção Semanal por Item</label>
+                        <select id="capacidadeProducao" name="capacidadeProducao">
+                            <option value="" selected>Selecione uma opção</option>
+                            <option value="20un">20 unidades</option>
+                            <option value="50un">50 unidades</option>
+                            <option value="100un">100 unidades</option>
+                            <option value="+500un">+500 unidades</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group optional">
+                        <label>Capacidade de Estoque</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="estoqueSim" name="capacidadeEstoque" value="Sim">
+                                <label for="estoqueSim">Sim</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="estoqueNao" name="capacidadeEstoque" value="Não">
+                                <label for="estoqueNao">Não</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group optional">
+                        <label>Já atuou com outro marketplace?</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="marketplaceNao" name="marketplaceOutros" value="Não">
+                                <label for="marketplaceNao">Não</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="marketplaceAmazon" name="marketplaceOutros" value="Amazon">
+                                <label for="marketplaceAmazon">Amazon</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="marketplaceShopee" name="marketplaceOutros" value="Shopee">
+                                <label for="marketplaceShopee">Shopee</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="marketplaceMagalu" name="marketplaceOutros" value="Magalu">
+                                <label for="marketplaceMagalu">Magalu</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="marketplaceOutro" name="marketplaceOutros" value="Outro">
+                                <label for="marketplaceOutro">Outro</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group optional hidden" id="outroMarketplaceGroup">
+                        <label for="outroMarketplace">Qual outro marketplace?</label>
+                        <input type="text" id="outroMarketplace" name="outroMarketplace" placeholder="Especifique o marketplace">
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-check-circle"></i> Registrar Indicação
+                    </button>
+                </form>
+                
+                <div id="successIndicacao" class="success-message hidden">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Indicação registrada com sucesso!</h3>
+                    <p id="success-indicacao-details"></p>
+                    <button id="newIndicacaoBtn" class="new-venda-btn">Nova Indicação</button>
+                </div>
+            </div>
         </main>
         
         <footer class="footer">
@@ -304,3 +520,14 @@
     <script src="assets/script.js"></script>
 </body>
 </html>
+
+        <!-- </main>
+        
+        <footer class="footer">
+            <p>Sistema desenvolvido para controle interno</p>
+        </footer>
+    </div>
+    
+    <script src="assets/script.js"></script>
+</body>
+</html> -->
