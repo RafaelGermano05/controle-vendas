@@ -1,4 +1,4 @@
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzTPCnKSZ5fNlClNj6FPMW_wyOmgZsvNN68VnzJaE4m8gkQaL_HotqRVt8jbM_n5zhf/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz1hKf7aokmOWjfbtni14gT9fWbwV_OU4SOL48vMp2O0xpvj0v3aWnDWv_x4zA6pgIf/exec';
 
 // Elementos principais
 const form = document.getElementById('clienteForm');
@@ -593,6 +593,8 @@ function setupIndicacaoTab() {
         }
         
         const formData = {
+            supervisorIndicacao: document.getElementById('supervisorIndicacao').value.trim(),
+            consultorIndicacao: document.getElementById('consultorIndicacao').value.trim(),
             nomeFantasia: document.getElementById('nomeFantasia').value.trim(),
             faturamentoIndicacao: document.getElementById('faturamentoIndicacao').value.trim(),
             nomeDecisor: document.getElementById('nomeDecisor').value.trim(),
@@ -734,6 +736,8 @@ function setupMarketplaceCheckboxes() {
 
 function setupIndicacaoFormValidation() {
     const requiredFieldsIndicacao = [
+        { id: 'supervisorIndicacao', errorId: 'supervisorIndicacao-error' },
+        { id: 'consultorIndicacao', errorId: 'consultorIndicacao-error' },
         { id: 'nomeFantasia', errorId: 'nomeFantasia-error' },
         { id: 'faturamentoIndicacao', errorId: 'faturamentoIndicacao-error' },
         { id: 'nomeDecisor', errorId: 'nomeDecisor-error' },
@@ -742,7 +746,7 @@ function setupIndicacaoFormValidation() {
         { id: 'segmentoIndicacao', errorId: 'segmentoIndicacao-error' },
         { id: 'enderecoIndicacao', errorId: 'enderecoIndicacao-error' },
         { id: 'cidadeIndicacao', errorId: 'cidadeIndicacao-error' },
-        { id: 'resumoIndicacao', errorId: 'resumoIndicacao-error' }
+        { id: 'resumoIndicacao', errorId: 'resumoIndicacao-error' },
     ];
     
     requiredFieldsIndicacao.forEach(field => {
@@ -786,6 +790,8 @@ function validateIndicacaoForm() {
     let isValid = true;
     
     const requiredFieldsIndicacao = [
+        { id: 'supervisorIndicacao', errorId: 'supervisorIndicacao-error' },
+        { id: 'consultorIndicacao', errorId: 'consultorIndicacao-error' },
         { id: 'nomeFantasia', errorId: 'nomeFantasia-error' },
         { id: 'faturamentoIndicacao', errorId: 'faturamentoIndicacao-error' },
         { id: 'nomeDecisor', errorId: 'nomeDecisor-error' },
@@ -794,7 +800,7 @@ function validateIndicacaoForm() {
         { id: 'segmentoIndicacao', errorId: 'segmentoIndicacao-error' },
         { id: 'enderecoIndicacao', errorId: 'enderecoIndicacao-error' },
         { id: 'cidadeIndicacao', errorId: 'cidadeIndicacao-error' },
-        { id: 'resumoIndicacao', errorId: 'resumoIndicacao-error' }
+        { id: 'resumoIndicacao', errorId: 'resumoIndicacao-error' },
     ];
     
     requiredFieldsIndicacao.forEach(field => {
