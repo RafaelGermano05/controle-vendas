@@ -1,4 +1,4 @@
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz1hKf7aokmOWjfbtni14gT9fWbwV_OU4SOL48vMp2O0xpvj0v3aWnDWv_x4zA6pgIf/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyhj6ZDSGKQRWIUmN9qyJDFfXk03ehRjVU2-XY29xcvnL7Hm5eOsx0QOE6oRbuTGu6U/exec';
 
 // Elementos principais
 const form = document.getElementById('clienteForm');
@@ -27,6 +27,7 @@ const requiredFields = [
     { id: 'estabelecimento', errorId: 'estabelecimento-error' },
     { id: 'custId', errorId: 'custId-error' },
     { id: 'telefone', errorId: 'telefone-error' },
+    { id: 'cnpjCpf', errorId: 'cnpjCpf-error' },
     { id: 'email', errorId: 'email-error' },
     { id: 'dataVenda', errorId: 'dataVenda-error' },
     { id: 'serial', errorId: 'serial-error' },
@@ -134,6 +135,58 @@ function setupSupervisorSelect() {
         }
     });
 }
+
+function formatarCNPJCPF(cnpjCpf) {
+    // Remove tudo que não for número
+    const numeros = cnpjCpf.replace(/\D/g, '');
+    
+    // Formata como CPF se tiver 11 dígitos
+    if (numeros.length === 11) {
+        return numeros.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    }
+    
+    // Formata como CNPJ se tiver 14 dígitos
+    if (numeros.length === 14) {
+        return numeros.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+    }
+    
+    // Retorna os números sem formatação se não for 11 ou 14 dígitos
+    return numeros;
+}
+
+// Adicione este evento listener para o campo CNPJ/CPF
+document.addEventListener('DOMContentLoaded', function() {
+    const cnpjCpfInput = document.getElementById('cnpjCpf');
+    
+    if (cnpjCpfInput) {
+        cnpjCpfInput.addEventListener('input', function(e) {
+            // Obtém o valor atual e aplica a formatação
+            const valorFormatado = formatarCNPJCPF(e.target.value);
+            
+            // Atualiza o valor do campo mantendo a posição do cursor
+            const cursorPos = e.target.selectionStart;
+            e.target.value = valorFormatado;
+            
+            // Ajusta a posição do cursor para após os caracteres adicionados
+            const newCursorPos = cursorPos + (valorFormatado.length - e.target.value.length);
+            e.target.setSelectionRange(newCursorPos, newCursorPos);
+        });
+        
+        // Validação do CNPJ/CPF
+        cnpjCpfInput.addEventListener('blur', function() {
+            const valor = this.value.replace(/\D/g, '');
+            const errorElement = document.getElementById('cnpjCpf-error');
+            
+            if (valor.length === 11 || valor.length === 14) {
+                errorElement.textContent = '';
+                errorElement.classList.remove('show');
+            } else {
+                errorElement.textContent = 'Digite um CPF (11 dígitos) ou CNPJ (14 dígitos) válido';
+                errorElement.classList.add('show');
+            }
+        });
+    }
+});
 
 function setupRamoSelect() {
     ramoSelect.addEventListener('change', function() {
@@ -370,6 +423,7 @@ form.addEventListener('submit', async (e) => {
         estabelecimento: document.getElementById('estabelecimento').value.trim(),
         custId: document.getElementById('custId').value.trim(),
         telefone: document.getElementById('telefone').value.trim(),
+        cnpjCpf: document.getElementById('cnpjCpf').value.trim(),
         email: document.getElementById('email').value.trim(),
         dataVenda: document.getElementById('dataVenda').value,
         serial: document.getElementById('serial').value.trim(),

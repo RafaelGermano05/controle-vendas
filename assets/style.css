@@ -821,6 +821,13 @@ body {
     font-weight: 500;
 }
 
+.input-hint {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 4px;
+    font-style: italic;
+}
 /* Campos opcionais */
 .form-group.optional label {
     font-weight: 500;
