@@ -1,4 +1,4 @@
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyhj6ZDSGKQRWIUmN9qyJDFfXk03ehRjVU2-XY29xcvnL7Hm5eOsx0QOE6oRbuTGu6U/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw4o4TO0vUcv-T7t3RmirpvAjJrBT-2A8v_NF7V_0cqaJ2w_L_PIM_ov6LOnLwHleu9/exec';
 
 // Elementos principais
 const form = document.getElementById('clienteForm');
@@ -28,6 +28,7 @@ const requiredFields = [
     { id: 'custId', errorId: 'custId-error' },
     { id: 'telefone', errorId: 'telefone-error' },
     { id: 'cnpjCpf', errorId: 'cnpjCpf-error' },
+    { id: 'cnpjCpfIndicacao', errorId: 'cnpjCpfIndicacao-error' },
     { id: 'email', errorId: 'email-error' },
     { id: 'dataVenda', errorId: 'dataVenda-error' },
     { id: 'serial', errorId: 'serial-error' },
@@ -154,7 +155,6 @@ function formatarCNPJCPF(cnpjCpf) {
     return numeros;
 }
 
-// Adicione este evento listener para o campo CNPJ/CPF
 document.addEventListener('DOMContentLoaded', function() {
     const cnpjCpfInput = document.getElementById('cnpjCpf');
     
@@ -176,6 +176,59 @@ document.addEventListener('DOMContentLoaded', function() {
         cnpjCpfInput.addEventListener('blur', function() {
             const valor = this.value.replace(/\D/g, '');
             const errorElement = document.getElementById('cnpjCpf-error');
+            
+            if (valor.length === 11 || valor.length === 14) {
+                errorElement.textContent = '';
+                errorElement.classList.remove('show');
+            } else {
+                errorElement.textContent = 'Digite um CPF (11 dígitos) ou CNPJ (14 dígitos) válido';
+                errorElement.classList.add('show');
+            }
+        });
+    }
+});
+
+function formatarCNPJCPFIndicacao(cnpjCpf) {
+    // Remove tudo que não for número
+    const numeros = cnpjCpf.replace(/\D/g, '');
+    
+    // Formata como CPF se tiver 11 dígitos
+    if (numeros.length === 11) {
+        return numeros.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    }
+    
+    // Formata como CNPJ se tiver 14 dígitos
+    if (numeros.length === 14) {
+        return numeros.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+    }
+    
+    // Retorna os números sem formatação se não for 11 ou 14 dígitos
+    return numeros;
+}
+
+
+// Adicione este evento listener para o campo CNPJ/CPF
+document.addEventListener('DOMContentLoaded', function() {
+    const cnpjCpfIndicacaoInput = document.getElementById('cnpjCpfIndicacao');
+    
+    if (cnpjCpfIndicacaoInput) {
+        cnpjCpfIndicacaoInput.addEventListener('input', function(e) {
+            // Obtém o valor atual e aplica a formatação
+            const valorFormatado = formatarcnpjCpfIndicacao(e.target.value);
+            
+            // Atualiza o valor do campo mantendo a posição do cursor
+            const cursorPos = e.target.selectionStart;
+            e.target.value = valorFormatado;
+            
+            // Ajusta a posição do cursor para após os caracteres adicionados
+            const newCursorPos = cursorPos + (valorFormatado.length - e.target.value.length);
+            e.target.setSelectionRange(newCursorPos, newCursorPos);
+        });
+        
+        // Validação do CNPJ/CPF
+        cnpjCpfIndicacaoInput.addEventListener('blur', function() {
+            const valor = this.value.replace(/\D/g, '');
+            const errorElement = document.getElementById('cnpjCpfIndicacao-error');
             
             if (valor.length === 11 || valor.length === 14) {
                 errorElement.textContent = '';
@@ -627,9 +680,7 @@ function setupPosVendaForm() {
     });
 }
 
-// ============================================
-// NOVA FUNCIONALIDADE: INDICAÇÃO MELI
-// ============================================
+// NOVA FEAT: INDICAÇÃO MELI
 
 function setupIndicacaoTab() {
     setupIndicacaoFormValidation();
@@ -653,6 +704,7 @@ function setupIndicacaoTab() {
             faturamentoIndicacao: document.getElementById('faturamentoIndicacao').value.trim(),
             nomeDecisor: document.getElementById('nomeDecisor').value.trim(),
             telefoneIndicacao: document.getElementById('telefoneIndicacao').value.trim(),
+            cnpjCpfIndicacao: document.getElementById('cnpjCpfIndicacao').value.trim(),
             emailIndicacao: document.getElementById('emailIndicacao').value.trim(),
             segmentoIndicacao: document.getElementById('segmentoIndicacao').value,
             enderecoIndicacao: document.getElementById('enderecoIndicacao').value.trim(),
@@ -796,6 +848,7 @@ function setupIndicacaoFormValidation() {
         { id: 'faturamentoIndicacao', errorId: 'faturamentoIndicacao-error' },
         { id: 'nomeDecisor', errorId: 'nomeDecisor-error' },
         { id: 'telefoneIndicacao', errorId: 'telefoneIndicacao-error' },
+        { id: 'cnpjCpfIndicacao', errorId: 'cnpjCpfIndicacao-error' },
         { id: 'emailIndicacao', errorId: 'emailIndicacao-error' },
         { id: 'segmentoIndicacao', errorId: 'segmentoIndicacao-error' },
         { id: 'enderecoIndicacao', errorId: 'enderecoIndicacao-error' },
@@ -850,6 +903,7 @@ function validateIndicacaoForm() {
         { id: 'faturamentoIndicacao', errorId: 'faturamentoIndicacao-error' },
         { id: 'nomeDecisor', errorId: 'nomeDecisor-error' },
         { id: 'telefoneIndicacao', errorId: 'telefoneIndicacao-error' },
+        { id: 'cnpjCpfIndicacao', errorId: 'cnpjCpfIndicacao-error' },
         { id: 'emailIndicacao', errorId: 'emailIndicacao-error' },
         { id: 'segmentoIndicacao', errorId: 'segmentoIndicacao-error' },
         { id: 'enderecoIndicacao', errorId: 'enderecoIndicacao-error' },
