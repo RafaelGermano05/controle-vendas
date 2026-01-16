@@ -28,7 +28,7 @@ const requiredFields = [
     { id: 'custId', errorId: 'custId-error' },
     { id: 'telefone', errorId: 'telefone-error' },
     { id: 'cnpjCpf', errorId: 'cnpjCpf-error' },
-    { id: 'cnpjCpfIndicacao', errorId: 'cnpjCpfIndicacao-error' },
+    // { id: 'cnpjCpfIndicacao', errorId: 'cnpjCpfIndicacao-error' },
     { id: 'email', errorId: 'email-error' },
     { id: 'dataVenda', errorId: 'dataVenda-error' },
     { id: 'serial', errorId: 'serial-error' },
