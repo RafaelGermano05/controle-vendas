@@ -43,14 +43,15 @@
                             <option value="" disabled selected>Selecione o supervisor</option>
                             <option value="Aldenir Medeiros">Aldenir Medeiros</option>
                             <option value="Rozélia Soares">Rozélia Soares</option>
-                            <option value="Thiago de Carvalho">Thiago de Carvalho</option>
                             <option value="Kesse Jhones">Kesse Jhones</option>
                             <option value="Anderson Brito">Anderson Brito</option>
                             <option value="Guilherme Queiroz">Guilherme Queiroz</option>
                             <option value="Ramom Amaral">Ramom Amaral</option>
                             <option value="Maria Anita">Maria Anita</option>
+                            <option value="Josias Oliveira">Josias Oliveira</option>
                             <option value="Pedro Lavor">Pedro Lavor</option>
                             <option value="Dougllas Araújo">Dougllas Araújo</option>
+                            <option value="Ray Weudes">Ray Weudes</option>
                             <option value="Tiago William">Tiago William</option>
                             <option value="Diogo Goncalves">Diogo Gonçalves</option>
                             <option value="Allexandre Serrão">Allexandre Serrão</option>
@@ -109,12 +110,12 @@
                         <div class="error-message" id="ramo-error"></div>
                     </div>
 
-                    <div class="form-group meli-group">
+                    <!-- <div class="form-group meli-group">
                         <div class="meli-header">
                             <label for="indicacaoSwitch" style="font-family: league system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 20px;">Indicação MELI (Marketplace)*</label>
 
                             <div class="meli-switch-wrap">
-                            <span id="indicacaoTextoLabel">Não</span> <!-- texto visível -->
+                            <span id="indicacaoTextoLabel">Não</span> 
                             <label class="switch">
                                 <input type="checkbox" id="indicacaoSwitch" name="indicacao" value="Nao">
                                 <span class="slider round"></span>
@@ -125,7 +126,7 @@
                             <div class="error-message" id="indicacaoTexto-error"></div>
 
                         </div>
-                    </div>
+                    </div> -->
 
 
                     <!-- <div class="form-group" style="background-color: rgb(255, 255, 0); border-radius: 0 15% 0 0;">
@@ -416,6 +417,21 @@
                             </div>
                         </div>
                         <div class="error-message" id="mercadoLivre-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>É cliente Mercado Pago?*</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="mercadoPagoSim" name="mercadoPago" value="Sim" required>
+                                <label for="mercadoPagoSim">Sim</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="mercadoPagoNao" name="mercadoPago" value="Não">
+                                <label for="mercadoPagoNao">Não</label>
+                            </div>
+                        </div>
+                        <div class="error-message" id="mercadoPago-error"></div>
                     </div>
                     
                     <div class="form-group">

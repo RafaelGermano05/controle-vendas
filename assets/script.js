@@ -1,5 +1,5 @@
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw4o4TO0vUcv-T7t3RmirpvAjJrBT-2A8v_NF7V_0cqaJ2w_L_PIM_ov6LOnLwHleu9/exec';
-
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_5omhosoGUAa5cVDkkb-4j57og4ARO43SQ5UI_V_uEuYFHOR6auT_5vsunlENB7As/exec';
+// https://script.google.com/macros/s/AKfycbw4o4TO0vUcv-T7t3RmirpvAjJrBT-2A8v_NF7V_0cqaJ2w_L_PIM_ov6LOnLwHleu9/exec
 // Elementos principais
 const form = document.getElementById('clienteForm');
 const successMessage = document.getElementById('successMessage');
@@ -15,9 +15,9 @@ const outroRamoInput = document.getElementById('outroRamo');
 const ramoError = document.getElementById('ramo-error');
 
 // Switch de indicação MELI
-const indicacaoSwitch = document.getElementById('indicacaoSwitch');
-const indicacaoTextoHidden = document.getElementById('indicacaoTexto');
-const indicacaoTextoLabel = document.getElementById('indicacaoTextoLabel');
+// const indicacaoSwitch = document.getElementById('indicacaoSwitch');
+// const indicacaoTextoHidden = document.getElementById('indicacaoTexto');
+// const indicacaoTextoLabel = document.getElementById('indicacaoTextoLabel');
 
 // Campos obrigatórios
 const requiredFields = [
@@ -33,7 +33,7 @@ const requiredFields = [
     { id: 'dataVenda', errorId: 'dataVenda-error' },
     { id: 'serial', errorId: 'serial-error' },
     { id: 'concorrencia', errorId: 'concorrencia-error' },
-    { id: 'indicacaoTexto', errorId: 'indicacaoTexto-error' },
+    // { id: 'indicacaoTexto', errorId: 'indicacaoTexto-error' },
     { id: 'faturamentoPrometido', errorId: 'faturamentoPrometido-error' }
 ];
 
@@ -49,26 +49,26 @@ document.addEventListener('DOMContentLoaded', function() {
     setupClienteSearch();
     setupPosVendaForm();
     setupNewAtendimentoButton();
-    setupIndicacaoTab(); // Nova funcionalidade
-    setupIndicacaoSwitch();
+    setupIndicacaoTab(); 
+    // setupIndicacaoSwitch();
     
     document.getElementById('dataAtendimento').value = new Date().toISOString().split('T')[0];
 });
 
 // Configuração do switch de indicação MELI
-function setupIndicacaoSwitch() {
-    indicacaoSwitch.addEventListener('change', () => {
-        if (indicacaoSwitch.checked) {
-            indicacaoSwitch.value = 'Sim';
-            indicacaoTextoHidden.value = 'Sim';
-            indicacaoTextoLabel.textContent = 'Sim';
-        } else {
-            indicacaoSwitch.value = 'Nao';
-            indicacaoTextoHidden.value = 'Nao';
-            indicacaoTextoLabel.textContent = 'Não';
-        }
-    });
-}
+// function setupIndicacaoSwitch() {
+//     indicacaoSwitch.addEventListener('change', () => {
+//         if (indicacaoSwitch.checked) {
+//             indicacaoSwitch.value = 'Sim';
+//             indicacaoTextoHidden.value = 'Sim';
+//             indicacaoTextoLabel.textContent = 'Sim';
+//         } else {
+//             indicacaoSwitch.value = 'Nao';
+//             indicacaoTextoHidden.value = 'Nao';
+//             indicacaoTextoLabel.textContent = 'Não';
+//         }
+//     });
+// }
 
 function setupTelefoneMask() {
     const telefoneInput = document.getElementById('telefone');
@@ -482,7 +482,7 @@ form.addEventListener('submit', async (e) => {
         serial: document.getElementById('serial').value.trim(),
         observacoes: document.getElementById('observacoes').value.trim(),
         concorrencia: document.getElementById('concorrencia').value.trim(),
-        indicacaoTexto: indicacaoSwitch.checked ? 'Sim' : 'Nao',
+        // indicacaoTexto: indicacaoSwitch.checked ? 'Sim' : 'Nao',
         faturamentoPrometido: document.getElementById('faturamentoPrometido').value.trim(),
         ramo: ramoSelect.value
     };
@@ -712,6 +712,7 @@ function setupIndicacaoTab() {
             observacoesIndicacao: document.getElementById('observacoesIndicacao').value.trim(),
             resumoIndicacao: document.getElementById('resumoIndicacao').value.trim(),
             mercadoLivre: document.querySelector('input[name="mercadoLivre"]:checked').value,
+            mercadoPago: document.querySelector('input[name="mercadoPago"]:checked').value,
             interesseCliente: document.querySelector('input[name="interesseCliente"]:checked').value,
             nivelExperiencia: document.getElementById('nivelExperiencia').value,
             capacidadeProducao: document.getElementById('capacidadeProducao').value,
@@ -882,6 +883,17 @@ function setupIndicacaoFormValidation() {
             mercadoLivreError.style.display = 'none';
         });
     });
+
+    const mercadoPagoRadios = document.querySelectorAll('input[name="mercadoPago"]');
+    const mercadoPagoError = document.getElementById('mercadoPago-error');
+    
+    mercadoPagoRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            mercadoPagoError.style.display = 'none';
+        });
+    });
+
+    
     
     const interesseRadios = document.querySelectorAll('input[name="interesseCliente"]');
     const interesseError = document.getElementById('interesseCliente-error');
@@ -946,6 +958,17 @@ function validateIndicacaoForm() {
         isValid = false;
     } else {
         mercadoLivreError.style.display = 'none';
+    }
+    
+    const mercadoPagoSelected = document.querySelector('input[name="mercadoPago"]:checked');
+    const mercadoPagoError = document.getElementById('mercadoPago-error');
+    
+    if (!mercadoPagoSelected) {
+        mercadoPagoError.textContent = 'Por favor, selecione uma opção';
+        mercadoPagoError.style.display = 'block';
+        isValid = false;
+    } else {
+        mercadoPagoError.style.display = 'none';
     }
     
     const interesseSelected = document.querySelector('input[name="interesseCliente"]:checked');
